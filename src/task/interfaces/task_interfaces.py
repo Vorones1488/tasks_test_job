@@ -9,8 +9,16 @@ class TaskInterface(AbstractRepository):
     async def add(selfl) -> AbstractModel:
         raise NotImplementedError
 
-
-class TaskStatusInterface(AbstractRepository):
     @abstractmethod
-    async def add(selfl) -> AbstractModel:
+    async def get_id(self, id: int) -> AbstractModel:
         raise NotImplementedError
+
+
+# class TaskStatusInterface(AbstractRepository):
+#     @abstractmethod
+#     async def add(selfl) -> AbstractModel:
+#         raise NotImplementedError
+#
+#     @abstractmethod
+#     async def get_id(self, id: int) -> AbstractModel:
+#         raise NotImplementedError

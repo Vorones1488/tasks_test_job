@@ -8,5 +8,6 @@ from src.task.interfaces.task_interfaces import TaskInterface
 
 class TaskSQLAlchemyRepository(SQLAlchemyTaskRepository, TaskInterface):
     model = Task
-    pass
+
+
 

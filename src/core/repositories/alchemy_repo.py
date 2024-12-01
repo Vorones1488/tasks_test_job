@@ -1,4 +1,4 @@
-from sqlalchemy import insert
+from sqlalchemy import insert, select
 from sqlalchemy.exc import IntegrityError
 
 from src.core.interfaces.interfaces import AbstractRepository
@@ -24,8 +24,11 @@ class SQLAlchemyTaskRepository(AbstractRepository):
 
 
 
-    # async def get(self, id: int) -> Optional[AbstractModel]:
-    #     raise NotImplementedError
+    async def get_id(self, id: int) -> model:
+        async with async_session_factory() as session:
+            qury = select(self.model).filter_by(id=id)
+            result = await session.scalars(qury)
+            return result.one()
     #
     # @abstractmethod
     # async def update(self, id: int, model: AbstractModel) -> AbstractModel:
