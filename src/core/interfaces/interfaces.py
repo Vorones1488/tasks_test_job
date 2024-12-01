@@ -12,9 +12,9 @@ class AbstractRepository(ABC):
     async def add(selfl) -> AbstractModel:
         raise NotImplementedError
 
-    # @abstractmethod
-    # async def get(self, id: int) -> Optional[AbstractModel]:
-    #     raise NotImplementedError
+    @abstractmethod
+    async def get_id(self, id: int) -> AbstractModel:
+        raise NotImplementedError
     #
     # @abstractmethod
     # async def update(self, id: int, model: AbstractModel) -> AbstractModel:

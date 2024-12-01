@@ -1,12 +1,12 @@
-import enum
+from enum import StrEnum, auto
 
-from sqlalchemy import String, ForeignKey
+from sqlalchemy import String, ForeignKey, Enum
 from sqlalchemy.orm import Mapped
 from sqlalchemy.testing.schema import mapped_column
 
 from src.core.model.base import Base
 
-class StatusEnum(enum.Enum):
+class StatusEnum(StrEnum):
     new_task = 'Новая задача'
     in_progress = 'В процессе работы'
     completed_successfully = 'Завершено успешно'
@@ -20,9 +20,4 @@ class Task(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     task_name: Mapped[str] = mapped_column(String(50))
     task_description: Mapped[str] = mapped_column(String(120))
-
-class TaskStatus(Base):
-    __tablename__ = 'task_status'
-    id: Mapped[int] = mapped_column(primary_key=True)
-    id_task: Mapped[int] = mapped_column(ForeignKey('task.id', ondelete='CASCADE'), primary_key=True)
-    status: Mapped[StatusEnum]
+    status: Mapped[StatusEnum] = mapped_column(Enum(StatusEnum),server_default=StatusEnum.new_task)

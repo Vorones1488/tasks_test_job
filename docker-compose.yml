@@ -3,6 +3,9 @@ version: '3.8'
 services:
   db:
     image: postgres:latest
+    hostname: postgres
+    ports:
+      - 5432:5413
     restart: always
     environment:
       POSTGRES_USER: $POSTGRES_USER
@@ -16,11 +19,12 @@ services:
     restart: always
     hostname: rabbit
     ports:
-      - "5672:5672"   # AMQP protocol port
-      - "15672:15672" # HTTP management UI
+      - 5672:5672
+      - 15672:15672
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
 volumes:
   postgres_data:
   rabbitmq_data:
+
