@@ -1,5 +1,5 @@
 from sqlalchemy import insert, select
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, NoResultFound, MultipleResultsFound
 
 from src.core.interfaces.interfaces import AbstractRepository
 from src.database import async_session_factory
@@ -11,6 +11,7 @@ class SQLAlchemyTaskRepository(AbstractRepository):
     model = None
 
     async def add(self, data: dict) -> model:
+        '''Adding a task'''
         async with async_session_factory() as session:
             stmt = insert(self.model).values(**data).returning(self.model)
             try:
@@ -25,10 +26,18 @@ class SQLAlchemyTaskRepository(AbstractRepository):
 
 
     async def get_id(self, id: int) -> model:
+        '''Getting one task by id'''
         async with async_session_factory() as session:
             qury = select(self.model).filter_by(id=id)
             result = await session.scalars(qury)
-            return result.one()
+            try:
+                return result.one()
+            except NoResultFound as e:
+                log_message('ERROR', f'{str(e)}')
+
+            except MultipleResultsFound as e:
+                log_message('ERROR', f'{str(e)}')
+
     #
     # @abstractmethod
     # async def update(self, id: int, model: AbstractModel) -> AbstractModel:
