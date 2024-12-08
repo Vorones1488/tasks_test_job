@@ -46,14 +46,14 @@ services:
 
   task_broker:
     container_name: task_b
-    build: ./task_client/fastApiProject
+    build: ./task_client/
     depends_on:
       - task_api
     ports:
       - 8002:8002
     restart: always
     env_file:
-      - .env
+      - ./task_client/.env
 volumes:
   postgres_data:
   rabbitmq_data:
