@@ -17,22 +17,22 @@ class TaskSQLAlchemyRepository(SQLAlchemyTaskRepository, TaskInterface):
         """Displaying a list of tasks by id with the possible use of a filter by status"""
         async with async_session_factory() as session:
             if filter_status is None:
-                qury = select(self.model)
-                result = await session.scalars(qury)
+                query = select(self.model)
+                result = await session.scalars(query)
                 return result.all()
-            qury = select(self.model).filter_by(status=filter_status)
-            result = await session.scalars(qury)
+            query = select(self.model).filter_by(status=filter_status)
+            result = await session.scalars(query)
             return result.all()
 
     async def put_status_task_to_id(self, id: int, status: str) -> model:
         """Changing the status of a task in the database by id"""
         async with async_session_factory() as session:
-            qury = (
+            query = (
                 update(self.model)
                 .filter_by(id=id)
                 .values(status=status)
                 .returning(self.model)
             )
-            result = await session.scalars(qury)
+            result = await session.scalars(query)
             await session.commit()
             return result.one()
