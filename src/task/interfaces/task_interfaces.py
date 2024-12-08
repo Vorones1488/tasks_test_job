@@ -14,5 +14,9 @@ class TaskInterface(AbstractRepository):
         raise NotImplementedError
 
     @abstractmethod
-    async def get_tasks_with_filter(self,filter_status:str) -> AbstractModel:
+    async def get_tasks_with_filter(self, filter_status: str) -> AbstractModel:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def put_status_task_to_id(self, id: int, status: str) -> AbstractModel:
         raise NotImplementedError

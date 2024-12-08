@@ -1,18 +1,25 @@
-version: '3.8'
+
 
 services:
+
+
+
+
+
   db:
     image: postgres:latest
     hostname: postgres
     ports:
-      - 5432:5413
+      - ${POSTGRES_PORT}:5432
     restart: always
     environment:
-      POSTGRES_USER: $POSTGRES_USER
-      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
-      POSTGRES_DB: $POSTGRES_DB
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -24,6 +31,29 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
+  task_api:
+    container_name: api
+    build: ./
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./:/tasc_client
+    ports:
+      - ${APP_TASK_HOST_PORT}:8000
+    restart: always
+    env_file:
+      - /.env
+
+  task_broker:
+    container_name: task_b
+    build: ./task_client/fastApiProject
+    depends_on:
+      - task_api
+    ports:
+      - 8002:8002
+    restart: always
+    env_file:
+      - .env
 volumes:
   postgres_data:
   rabbitmq_data:

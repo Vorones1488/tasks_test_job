@@ -21,5 +21,17 @@ class Settings(BaseSettings):
         # postgresql+asyncpg://postgres:postgres@localhost:5432/sa
         return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
 
+    HOST: str
+    PORT: int
+    LOGIN: str
+    PASSWORD: str
+    RABBITMQ_QUEUE_TASK: str
+
+    @property
+    def url_amqp(self) -> str:
+        return f"amqp://{self.LOGIN}:{self.PASSWORD}@localhost:{self.HOST}"
+
+    APP_TASK_HOST_PORT: int
+
 
 setting = Settings()
