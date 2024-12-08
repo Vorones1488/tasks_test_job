@@ -24,8 +24,8 @@ class SQLAlchemyTaskRepository(AbstractRepository):
     async def get_id(self, id: int) -> model:
         """Getting one task by id"""
         async with async_session_factory() as session:
-            qury = select(self.model).filter_by(id=id)
-            result = await session.scalars(qury)
+            query = select(self.model).filter_by(id=id)
+            result = await session.scalars(query)
             try:
                 return result.one()
             except NoResultFound as e:
