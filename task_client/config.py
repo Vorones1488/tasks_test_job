@@ -16,4 +16,4 @@ class Settings(BaseSettings):
 
     @property
     def url(self) -> str:
-        return f"amqp://{self.LOGIN}:{self.PASSWORD}@{self.HOST}"
+        return f"amqp://{self.LOGIN}:{self.PASSWORD}@{self.HOST}:{self.PORT}"

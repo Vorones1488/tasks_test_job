@@ -1,7 +1,5 @@
 from pydantic import BaseModel, Field
 
-from src.task.models.tasks_model import StatusEnum
-
 
 class TaskBaseSchemas(BaseModel):
     task_name: str = Field(..., max_length=50)

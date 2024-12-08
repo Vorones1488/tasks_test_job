@@ -2,7 +2,6 @@ import os
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pathlib import Path
 
-from sqlalchemy import URL
 
 BASE_DIR = Path(__file__).parent.parent
 
@@ -29,7 +28,7 @@ class Settings(BaseSettings):
 
     @property
     def url_amqp(self) -> str:
-        return f"amqp://{self.LOGIN}:{self.PASSWORD}@localhost:{self.HOST}"
+        return f"amqp://{self.LOGIN}:{self.PASSWORD}@{self.HOST}:{self.PORT}"
 
     APP_TASK_HOST_PORT: int
 

@@ -1,8 +1,5 @@
-import json
-from types import NoneType
 from typing import List
 
-import aio_pika
 from pydantic import BaseModel
 from sqlalchemy.exc import IntegrityError, NoResultFound, MultipleResultsFound
 from fastapi.exceptions import HTTPException
@@ -12,7 +9,6 @@ from src.logging.log import log_message
 from src.task.interfaces.task_interfaces import TaskInterface
 from src.task.models.tasks_model import Task
 from src.task.repositories.task_repo import TaskSQLAlchemyRepository
-from src.task.schemas.task_schemas import TaskBaseSchemas
 
 
 class TaskServices:

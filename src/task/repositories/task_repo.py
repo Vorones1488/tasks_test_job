@@ -1,10 +1,9 @@
 from sqlalchemy import select, update
-from sqlalchemy.exc import NoResultFound, IntegrityError
 
 
 from src.core.repositories.alchemy_repo import SQLAlchemyTaskRepository
 from src.database import async_session_factory
-from src.logging.log import log_message
+
 from src.task.models.tasks_model import Task
 
 
