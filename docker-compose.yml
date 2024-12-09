@@ -3,13 +3,18 @@
 services:
   db:
     image: postgres:15
-    hostname: ${POSTGRES_HOST}
+    hostname: $POSTGRES_HOST
     ports:
-        - ${POSTGRES_PORT}:5432
+        - $POSTGRES_PORT:5432
     environment:
-        POSTGRES_USER: ${POSTGRES_USER}
-        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-        POSTGRES_DB: ${POSTGRES_DB}
+        POSTGRES_USER: $POSTGRES_USER
+        POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+        POSTGRES_DB: $POSTGRES_DB
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U  ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     volumes:
         - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
@@ -23,6 +28,11 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+    healthcheck:
+      test: [ "CMD-SHELL", "rabbitmqctl status" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
@@ -30,12 +40,18 @@ services:
   task_api:
     build: ./
     env_file: ./.env
+    environment:
+      POSTGRES_HOST: db
     container_name: api
     ports:
       - 9999:8000
+    restart: always
     depends_on:
-      - db
-      - rabbitmq
+      db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
 
   task_broker:
     container_name: task_b
