@@ -3,7 +3,7 @@
 services:
   db:
     image: postgres:15
-    hostname: postgres
+    hostname: ${POSTGRES_HOST}
     ports:
         - ${POSTGRES_PORT}:5432
     environment:
@@ -12,8 +12,6 @@ services:
         POSTGRES_DB: ${POSTGRES_DB}
     volumes:
         - postgres_data:/var/lib/postgresql/data
-    env_file:
-        - .env
     restart: unless-stopped
 
 
@@ -21,7 +19,7 @@ services:
   rabbitmq:
     image: rabbitmq:3-management
     restart: always
-    hostname: rabbit
+    hostname: $HOST
     ports:
       - 5672:5672
       - 15672:15672
@@ -31,14 +29,13 @@ services:
 
   task_api:
     build: ./
-    env_file: '.env'
-    environment:
-      POSTGRES_HOST: db
+    env_file: ./.env
     container_name: api
     ports:
       - 9999:8000
     depends_on:
       - db
+      - rabbitmq
 
   task_broker:
     container_name: task_b

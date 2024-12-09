@@ -30,7 +30,5 @@ class Settings(BaseSettings):
     def url_amqp(self) -> str:
         return f"amqp://{self.LOGIN}:{self.PASSWORD}@{self.HOST}:{self.PORT}"
 
-    APP_TASK_HOST_PORT: int
-
 
 setting = Settings()
