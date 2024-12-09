@@ -28,7 +28,7 @@ class Settings(BaseSettings):
 
     @property
     def url_amqp(self) -> str:
-        return f"amqp://{self.LOGIN}:{self.PASSWORD}@{self.HOST}:{self.PORT}"
+        return f"amqp://@{self.HOST}:{self.PORT}"
 
 
 setting = Settings()
